@@ -1,3 +1,4 @@
+"""Acts as a simple framework for orchestrating a graph of functions that take a state and return a new state."""
 import logging
 from collections import defaultdict
 from typing import Any
