@@ -35,8 +35,6 @@ if __name__ == "__main__":
     with open(args.filepath, "r") as file:
         # one line per question
         questions = file.readlines()
-    
-    questions = questions[:1]
 
     for question in questions:
         print(run_question(question))
