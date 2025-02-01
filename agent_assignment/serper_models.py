@@ -41,22 +41,20 @@ class RelatedSearch(BaseModel):
 
 class SerperResponse(BaseModel):
     searchParameters: SearchParameters
-    organic: List[OrganicItem]
-    peopleAlsoAsk: List[PeopleAlsoAskItem]
-    relatedSearches: List[RelatedSearch]
+    organic: List[OrganicItem] = []
+    peopleAlsoAsk: List[PeopleAlsoAskItem] = []
+    relatedSearches: List[RelatedSearch] = []
     credits: int
-
-
 
 
 def fetch_and_convert_to_markdown(url: str) -> str:
     """
     Fetch the web page from the given URL, extract its main content,
     and convert it to Markdown using markdownify.
-    
+
     Args:
         url (str): The URL of the web page.
-    
+
     Returns:
         str: The main content of the page in Markdown format.
     """
@@ -70,5 +68,5 @@ def fetch_and_convert_to_markdown(url: str) -> str:
 
     # Convert HTML to Markdown using markdownify
     markdown_content = md(main_html)
-    
+
     return markdown_content
