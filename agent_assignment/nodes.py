@@ -213,6 +213,7 @@ class SummarisedContent(BaseModel):
 def summarise(state: State):
     logger.info("Summarising conversation...")
     messages = [{"role": "system", "content": summary_prompt}]
+    messages.append({"role": "user", "content": state.question})
     references = []
     for i, reference in enumerate(state.references, start=1):
         references.append(f"[{i}] {reference.statement}")
