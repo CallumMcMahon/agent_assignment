@@ -18,18 +18,29 @@ logger = logging.getLogger(__name__)
 
 
 def run_question(question: str):
-    state = State(messages=[{"role": "user", "content": question}], max_retries=3)
+    state = State(
+        question=question,
+        messages=[{"role": "user", "content": question}],
+        max_retries=5,
+    )
     graph = build_graph()
     out: State = graph.run(state)
     formatted_sources = "\n".join(
         [f"{i + 1}. {ref.source}" for i, ref in enumerate(out.references)]
     )
-    formatted_answer = f"Final Answer: {out.final_answer}\nReferences: {formatted_sources}"
+    formatted_answer = (
+        f"Final Answer: {out.final_answer}\nReferences: {formatted_sources}"
+    )
     return formatted_answer
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Process a question for the assistant.")
-    parser.add_argument("filepath", type=str, help="Path to the file containing the question.")
+    parser = argparse.ArgumentParser(
+        description="Process a question for the assistant."
+    )
+    parser.add_argument(
+        "filepath", type=str, help="Path to the file containing the question."
+    )
     args = parser.parse_args()
 
     with open(args.filepath, "r") as file:
@@ -37,4 +48,9 @@ if __name__ == "__main__":
         questions = file.readlines()
 
     for question in questions:
-        print(run_question(question))
+        answer = run_question(question)
+        print(answer)
+        output_filepath = args.filepath.replace(".txt", "_answers.txt")
+        answer = answer.replace("\n", "\\n")
+        with open(output_filepath, "a") as output_file:
+            output_file.write(answer + "\n")
